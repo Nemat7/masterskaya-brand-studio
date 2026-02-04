@@ -1,77 +1,86 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const steps = [
   {
     number: "01",
-    title: "Understand the business",
-    description: "Deep dive into your goals, market, and challenges.",
+    titleKey: "approach.step1",
+    descKey: "approach.step1.desc",
   },
   {
     number: "02",
-    title: "Design the solution",
-    description: "Strategic and creative frameworks tailored to you.",
+    titleKey: "approach.step2",
+    descKey: "approach.step2.desc",
   },
   {
     number: "03",
-    title: "Create and launch",
-    description: "Execution with precision and attention to detail.",
+    titleKey: "approach.step3",
+    descKey: "approach.step3.desc",
   },
   {
     number: "04",
-    title: "Develop and scale",
-    description: "Continuous improvement and growth support.",
+    titleKey: "approach.step4",
+    descKey: "approach.step4.desc",
   },
 ];
 
 function StepItem({ 
   number, 
-  title, 
-  description, 
+  titleKey, 
+  descKey, 
   index,
   isLast
 }: { 
   number: string; 
-  title: string; 
-  description: string;
+  titleKey: string; 
+  descKey: string;
   index: number;
   isLast: boolean;
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const { t } = useLanguage();
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, x: -30 }}
-      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+      initial={{ opacity: 0, x: -40 }}
+      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
       transition={{ 
-        duration: 0.6, 
+        duration: 0.7, 
         delay: index * 0.15,
         ease: [0.16, 1, 0.3, 1] 
       }}
-      className="relative flex gap-6 md:gap-10"
+      className="relative flex gap-6 md:gap-10 group"
     >
       {/* Timeline */}
       <div className="flex flex-col items-center">
-        <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold shrink-0">
+        <motion.div 
+          className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold shrink-0 transition-all duration-300 group-hover:scale-110"
+          whileHover={{ rotate: 10 }}
+        >
           {number}
-        </div>
+        </motion.div>
         {!isLast && (
           <motion.div
             initial={{ scaleY: 0 }}
             animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.15 + 0.3 }}
+            transition={{ duration: 0.8, delay: index * 0.15 + 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="w-px flex-1 bg-border origin-top my-4"
           />
         )}
       </div>
 
       {/* Content */}
-      <div className={`pb-12 ${isLast ? '' : ''}`}>
-        <h3 className="heading-card mb-2">{title}</h3>
-        <p className="text-small max-w-md">{description}</p>
-      </div>
+      <motion.div 
+        className={`pb-14 ${isLast ? '' : ''}`}
+        whileHover={{ x: 5 }}
+        transition={{ duration: 0.2 }}
+      >
+        <h3 className="heading-card mb-2">{t(titleKey)}</h3>
+        <p className="text-small max-w-md">{t(descKey)}</p>
+      </motion.div>
     </motion.div>
   );
 }
@@ -79,6 +88,7 @@ function StepItem({
 export function ApproachSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { t } = useLanguage();
 
   return (
     <section id="approach" className="py-24 md:py-32 lg:py-40 bg-secondary/50">
@@ -88,16 +98,16 @@ export function ApproachSection() {
             {/* Left column - heading */}
             <motion.div
               ref={ref}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.6 }}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+              transition={{ duration: 0.8 }}
               className="lg:sticky lg:top-32 lg:self-start"
             >
               <h2 className="heading-section mb-6">
-                We approach projects as products
+                {t("approach.title")}
               </h2>
               <p className="text-body max-w-lg">
-                Every engagement is treated with the same rigor and care we'd give to building our own business.
+                {t("approach.subtitle")}
               </p>
             </motion.div>
 
@@ -106,7 +116,9 @@ export function ApproachSection() {
               {steps.map((step, index) => (
                 <StepItem 
                   key={step.number} 
-                  {...step} 
+                  number={step.number}
+                  titleKey={step.titleKey}
+                  descKey={step.descKey}
                   index={index}
                   isLast={index === steps.length - 1}
                 />

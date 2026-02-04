@@ -1,23 +1,26 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-
-const footerLinks = {
-  navigation: [
-    { label: "Expertise", href: "#expertise" },
-    { label: "Approach", href: "#approach" },
-    { label: "Digital", href: "#digital" },
-    { label: "Contact", href: "#contact" },
-  ],
-  contact: [
-    { label: "hello@masterskaya.com", href: "mailto:hello@masterskaya.com" },
-  ],
-};
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Footer() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const { t } = useLanguage();
 
   const currentYear = new Date().getFullYear();
+
+  const footerLinks = {
+    navigation: [
+      { labelKey: "nav.expertise", href: "#expertise" },
+      { labelKey: "nav.approach", href: "#approach" },
+      { labelKey: "nav.cases", href: "#cases" },
+      { labelKey: "nav.digital", href: "#digital" },
+      { labelKey: "nav.contact", href: "#contact" },
+    ],
+    contact: [
+      { label: "hello@masterskaya.com", href: "mailto:hello@masterskaya.com" },
+    ],
+  };
 
   return (
     <footer className="py-16 md:py-20 border-t border-border bg-secondary/30">
@@ -32,28 +35,34 @@ export function Footer() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 mb-16">
               {/* Logo & tagline */}
               <div className="md:col-span-1">
-                <a href="#" className="text-2xl font-semibold text-foreground tracking-tight inline-block mb-4">
+                <motion.a 
+                  href="#" 
+                  className="text-2xl font-semibold text-foreground tracking-tight inline-block mb-4"
+                  whileHover={{ scale: 1.02 }}
+                >
                   Masterskaya
-                </a>
+                </motion.a>
                 <p className="text-small max-w-xs">
-                  Creating brands, products, and digital solutions.
+                  {t("footer.tagline")}
                 </p>
               </div>
 
               {/* Navigation */}
               <div>
                 <h4 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-widest">
-                  Navigation
+                  {t("footer.navigation")}
                 </h4>
                 <ul className="space-y-3">
                   {footerLinks.navigation.map((link) => (
-                    <li key={link.label}>
-                      <a 
+                    <li key={link.labelKey}>
+                      <motion.a 
                         href={link.href}
                         className="text-muted-foreground hover:text-foreground transition-colors link-underline"
+                        whileHover={{ x: 3 }}
+                        transition={{ duration: 0.2 }}
                       >
-                        {link.label}
-                      </a>
+                        {t(link.labelKey)}
+                      </motion.a>
                     </li>
                   ))}
                 </ul>
@@ -62,17 +71,19 @@ export function Footer() {
               {/* Contact */}
               <div>
                 <h4 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-widest">
-                  Contact
+                  {t("footer.contact")}
                 </h4>
                 <ul className="space-y-3">
                   {footerLinks.contact.map((link) => (
                     <li key={link.label}>
-                      <a 
+                      <motion.a 
                         href={link.href}
                         className="text-muted-foreground hover:text-foreground transition-colors link-underline"
+                        whileHover={{ x: 3 }}
+                        transition={{ duration: 0.2 }}
                       >
                         {link.label}
-                      </a>
+                      </motion.a>
                     </li>
                   ))}
                 </ul>
@@ -82,10 +93,10 @@ export function Footer() {
             {/* Bottom bar */}
             <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-sm text-muted-foreground">
-                © {currentYear} Masterskaya. All rights reserved.
+                © {currentYear} Masterskaya. {t("footer.rights")}
               </p>
               <p className="text-sm text-muted-foreground">
-                Crafted with precision
+                {t("footer.crafted")}
               </p>
             </div>
           </motion.div>

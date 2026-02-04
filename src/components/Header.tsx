@@ -1,18 +1,21 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
-
-const navItems = [
-  { label: "Expertise", href: "#expertise" },
-  { label: "Approach", href: "#approach" },
-  { label: "Digital", href: "#digital" },
-  { label: "Contact", href: "#contact" },
-];
+import { Menu, X, Globe } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
+
+  const navItems = [
+    { labelKey: "nav.expertise", href: "#expertise" },
+    { labelKey: "nav.approach", href: "#approach" },
+    { labelKey: "nav.cases", href: "#cases" },
+    { labelKey: "nav.digital", href: "#digital" },
+    { labelKey: "nav.contact", href: "#contact" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +24,10 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const toggleLanguage = () => {
+    setLanguage(language === "ru" ? "en" : "ru");
+  };
 
   return (
     <header
@@ -33,37 +40,63 @@ export function Header() {
       <div className="section-padding">
         <div className="container-wide flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="#" className="text-xl md:text-2xl font-semibold text-foreground tracking-tight">
+          <motion.a 
+            href="#" 
+            className="text-xl md:text-2xl font-semibold text-foreground tracking-tight"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
             Masterskaya
-          </a>
+          </motion.a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => (
-              <a
-                key={item.label}
+              <motion.a
+                key={item.labelKey}
                 href={item.href}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors link-underline"
+                whileHover={{ y: -1 }}
+                transition={{ duration: 0.2 }}
               >
-                {item.label}
-              </a>
+                {t(item.labelKey)}
+              </motion.a>
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* Right side - Language toggle & CTA */}
+          <div className="hidden md:flex items-center gap-4">
+            <motion.button
+              onClick={toggleLanguage}
+              className="flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Globe className="w-4 h-4" />
+              <span className="uppercase">{language}</span>
+            </motion.button>
             <Button variant="default" size="sm" className="rounded-full px-6">
-              Discuss a project
+              {t("cta.discuss")}
             </Button>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-foreground"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile - Language + Menu Toggle */}
+          <div className="flex md:hidden items-center gap-2">
+            <motion.button
+              onClick={toggleLanguage}
+              className="p-2 text-muted-foreground hover:text-foreground"
+              whileTap={{ scale: 0.95 }}
+            >
+              <Globe className="w-5 h-5" />
+            </motion.button>
+            <motion.button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 text-foreground"
+              whileTap={{ scale: 0.95 }}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </motion.button>
+          </div>
         </div>
       </div>
 
@@ -74,22 +107,32 @@ export function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background border-b border-border"
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-background border-b border-border overflow-hidden"
           >
-            <nav className="section-padding py-6 flex flex-col gap-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
+            <nav className="section-padding py-6 flex flex-col gap-2">
+              {navItems.map((item, index) => (
+                <motion.a
+                  key={item.labelKey}
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-lg font-medium text-foreground py-2"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="text-lg font-medium text-foreground py-3 border-b border-border/50 last:border-b-0"
                 >
-                  {item.label}
-                </a>
+                  {t(item.labelKey)}
+                </motion.a>
               ))}
-              <Button variant="default" className="rounded-full mt-4 w-full">
-                Discuss a project
-              </Button>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <Button variant="default" className="rounded-full mt-4 w-full">
+                  {t("cta.discuss")}
+                </Button>
+              </motion.div>
             </nav>
           </motion.div>
         )}
