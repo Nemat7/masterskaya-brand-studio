@@ -2,17 +2,32 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const clients = [
-  "Технолайн",
-  "Банк Развития", 
-  "МегаСтрой",
-  "ИнноТех",
-  "Альфа Групп",
-  "Глобал Медиа",
-  "СмартСити",
-  "Фуд Маркет",
-  "Энерго Плюс",
-  "Дигитал Про",
+  { name: "Технолайн", logo: "TL" },
+  { name: "Банк Развития", logo: "БР" },
+  { name: "МегаСтрой", logo: "MC" },
+  { name: "ИнноТех", logo: "IT" },
+  { name: "Альфа Групп", logo: "AG" },
+  { name: "Глобал Медиа", logo: "GM" },
+  { name: "СмартСити", logo: "SC" },
+  { name: "Фуд Маркет", logo: "FM" },
+  { name: "Энерго Плюс", logo: "E+" },
+  { name: "Дигитал Про", logo: "DP" },
 ];
+
+function ClientLogo({ client }: { client: typeof clients[0] }) {
+  return (
+    <div className="flex-shrink-0 px-6 md:px-10 group">
+      <div className="flex items-center gap-3 opacity-25 hover:opacity-60 transition-opacity duration-500 cursor-default">
+        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-foreground/10 flex items-center justify-center">
+          <span className="text-sm md:text-base font-bold text-foreground/60">{client.logo}</span>
+        </div>
+        <span className="text-lg md:text-2xl font-semibold text-foreground whitespace-nowrap">
+          {client.name}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export function ClientsMarquee() {
   const { t } = useLanguage();
@@ -36,27 +51,28 @@ export function ClientsMarquee() {
         <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-r from-background to-transparent z-10" />
         <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-l from-background to-transparent z-10" />
         
-        {/* Marquee container */}
+        {/* Row 1 */}
+        <div className="flex overflow-hidden mb-6">
+          <motion.div
+            className="flex items-center"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          >
+            {[...clients, ...clients].map((client, index) => (
+              <ClientLogo key={index} client={client} />
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Row 2 - reverse */}
         <div className="flex overflow-hidden">
           <motion.div
-            className="flex gap-12 md:gap-20 items-center"
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{
-              duration: 30,
-              repeat: Infinity,
-              ease: "linear",
-            }}
+            className="flex items-center"
+            animate={{ x: ["-50%", "0%"] }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
           >
-            {/* Double the items for seamless loop */}
-            {[...clients, ...clients].map((client, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 px-6 md:px-8"
-              >
-                <span className="text-2xl md:text-4xl font-semibold text-foreground/20 hover:text-foreground/60 transition-colors duration-500 whitespace-nowrap cursor-default">
-                  {client}
-                </span>
-              </div>
+            {[...clients.slice(5), ...clients.slice(0, 5), ...clients.slice(5), ...clients.slice(0, 5)].map((client, index) => (
+              <ClientLogo key={index} client={client} />
             ))}
           </motion.div>
         </div>
