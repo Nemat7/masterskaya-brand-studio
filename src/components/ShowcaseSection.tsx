@@ -40,9 +40,8 @@ export function ShowcaseSection() {
     offset: ["start start", "end end"],
   });
 
-  // Map scroll progress to active index
   const indexProgress = useTransform(scrollYProgress, [0, 1], [0, showcaseItems.length - 0.01]);
-  
+
   indexProgress.on("change", (latest) => {
     const newIndex = Math.floor(latest);
     if (newIndex !== activeIndex && newIndex >= 0 && newIndex < showcaseItems.length) {
@@ -50,20 +49,19 @@ export function ShowcaseSection() {
     }
   });
 
-  // Image transforms
   const imageScale = useTransform(scrollYProgress, [0, 0.1], [0.9, 1]);
   const imageOpacity = useTransform(scrollYProgress, [0, 0.1], [0.5, 1]);
 
   return (
-    <section 
-      id="showcase" 
-      ref={containerRef} 
+    <section
+      id="showcase"
+      ref={containerRef}
       className="relative bg-foreground text-background"
       style={{ height: `${(showcaseItems.length + 1) * 100}vh` }}
     >
-      <div className="sticky top-0 h-screen overflow-hidden">
+      <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="section-padding pt-20 pb-8">
+        <div className="section-padding pt-20 pb-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -75,96 +73,45 @@ export function ShowcaseSection() {
           </motion.div>
         </div>
 
-        {/* Content area */}
-        <div className="section-padding flex-1">
-          <div className="container-wide h-full">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start" style={{ height: "calc(100vh - 200px)" }}>
-              
-              {/* Left: Large image */}
-              <div className="lg:col-span-7 h-full relative">
-                {showcaseItems.map((item, index) => (
-                  <motion.div
-                    key={item.id}
-                    className="absolute inset-0 rounded-2xl overflow-hidden"
-                    animate={{
-                      opacity: index === activeIndex ? 1 : 0,
-                      scale: index === activeIndex ? 1 : 0.95,
-                    }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    <motion.img
-                      src={item.image}
-                      alt={t(item.titleKey)}
-                      className="w-full h-full object-cover rounded-2xl"
-                      style={{ scale: imageScale, opacity: imageOpacity }}
-                    />
-                    {/* Label badge */}
-                    <div className="absolute top-6 left-6">
-                      <span className="px-4 py-2 rounded-full bg-background/10 backdrop-blur-md text-sm font-medium text-background">
-                        {t(item.labelKey)}
-                      </span>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Right: Thumbnails + text */}
-              <div className="lg:col-span-5 flex flex-col justify-center gap-6 h-full py-8">
-                {/* Thumbnails */}
-                <div className="flex flex-col gap-4">
-                  {showcaseItems.map((item, index) => (
-                    <motion.div
-                      key={item.id}
-                      className={`flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all duration-500 ${
-                        index === activeIndex 
-                          ? "bg-background/10" 
-                          : "bg-transparent hover:bg-background/5"
-                      }`}
-                      animate={{
-                        opacity: index === activeIndex ? 1 : 0.4,
-                        x: index === activeIndex ? 0 : -10,
-                      }}
-                      transition={{ duration: 0.4 }}
-                    >
-                      {/* Small thumbnail */}
-                      <div className="w-20 h-16 md:w-24 md:h-20 rounded-lg overflow-hidden flex-shrink-0">
-                        <img 
-                          src={item.image} 
-                          alt="" 
-                          className="w-full h-full object-cover" 
-                        />
-                      </div>
-                      
-                      {/* Info */}
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-base md:text-lg truncate">{t(item.titleKey)}</h4>
-                        <p className="text-background/50 text-sm mt-1 line-clamp-2">{t(item.descKey)}</p>
-                      </div>
-
-                      {/* Active indicator */}
-                      <motion.div
-                        className="w-1.5 h-8 rounded-full bg-background flex-shrink-0"
-                        animate={{ opacity: index === activeIndex ? 1 : 0 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    </motion.div>
-                  ))}
+        {/* Full-width image area */}
+        <div className="flex-1 section-padding pb-20 relative">
+          <div className="container-wide h-full relative">
+            {showcaseItems.map((item, index) => (
+              <motion.div
+                key={item.id}
+                className="absolute inset-0 rounded-2xl overflow-hidden"
+                animate={{
+                  opacity: index === activeIndex ? 1 : 0,
+                  scale: index === activeIndex ? 1 : 0.95,
+                }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <motion.img
+                  src={item.image}
+                  alt={t(item.titleKey)}
+                  className="w-full h-full object-cover rounded-2xl"
+                  style={{ scale: imageScale, opacity: imageOpacity }}
+                />
+                {/* Label badge */}
+                <div className="absolute top-6 left-6">
+                  <span className="px-4 py-2 rounded-full bg-background/10 backdrop-blur-md text-sm font-medium text-background">
+                    {t(item.labelKey)}
+                  </span>
                 </div>
-
-                {/* Active item description */}
-                <motion.div
-                  key={activeIndex}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="mt-4 p-6 rounded-2xl bg-background/5 border border-background/10"
-                >
-                  <p className="text-background/70 text-base leading-relaxed">
-                    {t(showcaseItems[activeIndex].descKey)}
-                  </p>
-                </motion.div>
-              </div>
-            </div>
+                {/* Title overlay at bottom */}
+                <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent">
+                  <motion.h3
+                    key={`title-${activeIndex}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className="text-2xl md:text-3xl lg:text-4xl font-semibold text-background"
+                  >
+                    {t(item.titleKey)}
+                  </motion.h3>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
 

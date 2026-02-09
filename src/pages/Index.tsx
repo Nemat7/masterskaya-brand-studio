@@ -12,14 +12,14 @@ import { DigitalSection } from "@/components/DigitalSection";
 import { CTASection } from "@/components/CTASection";
 import { Footer } from "@/components/Footer";
 import { FloatingCTA } from "@/components/FloatingCTA";
-import { CursorFollower } from "@/components/CursorFollower";
+
 import { ScrollProgress } from "@/components/ScrollProgress";
 
 const Index = () => {
   return (
     <LanguageProvider>
       <div className="min-h-screen bg-background">
-        <CursorFollower />
+        
         <ScrollProgress />
         <Header />
         <main>

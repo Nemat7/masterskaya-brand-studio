@@ -116,16 +116,6 @@
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
   
-  /* Hide cursor on desktop when custom cursor is active */
-  @media (min-width: 769px) {
-    body {
-      cursor: none;
-    }
-    
-    a, button, [role="button"], input, textarea, select {
-      cursor: none;
-    }
-  }
   
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
