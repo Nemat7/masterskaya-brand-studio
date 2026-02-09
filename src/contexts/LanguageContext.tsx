@@ -87,6 +87,12 @@ const translations: Record<Language, Record<string, string>> = {
     "team.5.role": "Менеджер проектов",
     "team.6.name": "Елена Карпова",
     "team.6.role": "Продюсер ивентов",
+    "team.1.bio": "10+ лет опыта в креативной индустрии. Руководит стратегическим и творческим процессом всех проектов студии.",
+    "team.2.bio": "Эксперт в маркетинговых стратегиях и аналитике. Разрабатывает комплексные планы продвижения для клиентов.",
+    "team.3.bio": "Создаёт визуальные концепции мирового уровня. Отвечает за брендинг и дизайн-направление студии.",
+    "team.4.bio": "Проектирует интуитивные интерфейсы для веб- и мобильных приложений с фокусом на пользовательский опыт.",
+    "team.5.bio": "Координирует команды и процессы. Обеспечивает своевременную реализацию проектов любого масштаба.",
+    "team.6.bio": "Организует масштабные мероприятия от концепции до реализации. Опыт работы с аудиторией до 10 000 человек.",
     
     // Showcase
     "showcase.title": "Три направления. Безграничные возможности.",
@@ -98,7 +104,7 @@ const translations: Record<Language, Record<string, string>> = {
     "showcase.2.desc": "Проектируем и разрабатываем платформы, приложения и сервисы, которые решают реальные бизнес-задачи.",
     "showcase.2.label": "Диджитал",
     "showcase.3.title": "Масштабные ивенты",
-    "showcase.3.desc": "Организуем конференции, запуски продуктов и корпоративные мероприятия мирового уровня.",
+    "showcase.3.desc": "Создаём незабываемые впечатления и опыт, которые объединяют людей и усиливают бренд.",
     "showcase.3.label": "Ивенты",
 
     // Floating CTA
@@ -238,6 +244,12 @@ const translations: Record<Language, Record<string, string>> = {
     "team.5.role": "Project Manager",
     "team.6.name": "Elena Karpova",
     "team.6.role": "Event Producer",
+    "team.1.bio": "10+ years in the creative industry. Leads strategic and creative processes across all studio projects.",
+    "team.2.bio": "Expert in marketing strategies and analytics. Develops comprehensive promotion plans for clients.",
+    "team.3.bio": "Creates world-class visual concepts. Leads branding and design direction for the studio.",
+    "team.4.bio": "Designs intuitive interfaces for web and mobile apps with a focus on user experience.",
+    "team.5.bio": "Coordinates teams and processes. Ensures timely delivery of projects at any scale.",
+    "team.6.bio": "Organizes large-scale events from concept to execution. Experience with audiences up to 10,000.",
     
     // Showcase
     "showcase.title": "Three directions. Endless possibilities.",
@@ -249,7 +261,7 @@ const translations: Record<Language, Record<string, string>> = {
     "showcase.2.desc": "Designing and developing platforms, apps, and services that solve real business challenges.",
     "showcase.2.label": "Digital",
     "showcase.3.title": "Large-scale Events",
-    "showcase.3.desc": "Organizing conferences, product launches, and world-class corporate events.",
+    "showcase.3.desc": "Creating unforgettable experiences that unite people and amplify brands.",
     "showcase.3.label": "Events",
 
     // Floating CTA
