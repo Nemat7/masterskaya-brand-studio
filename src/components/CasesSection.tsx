@@ -62,7 +62,7 @@ function CaseCard({ study, index }: { study: CaseStudy; index: number }) {
       transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
       className="flex-shrink-0 w-[87vw] md:w-[80vw] lg:w-[75vw] snap-center"
     >
-      <div className="relative overflow-hidden rounded-[28px] bg-foreground aspect-[16/9]">
+      <div className="relative overflow-hidden rounded-[28px] aspect-[16/9]" style={{ backgroundColor: "#000" }}>
         <img
           src={study.image}
           alt={t(study.titleKey)}
