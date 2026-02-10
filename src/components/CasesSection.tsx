@@ -49,33 +49,23 @@ const caseStudies: CaseStudy[] = [
   },
 ];
 
-function CaseCard({ 
-  study, 
-  index 
-}: { 
-  study: CaseStudy;
-  index: number;
-}) {
+function CaseCard({ study, index }: { study: CaseStudy; index: number }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
   const { t } = useLanguage();
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 60 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-      transition={{ 
-        duration: 0.8, 
-        delay: index * 0.15,
-        ease: [0.16, 1, 0.3, 1] 
-      }}
-      className={`group cursor-pointer ${index === 0 ? 'md:col-span-2' : ''}`}
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      className="flex-shrink-0 w-[85vw] md:w-[60vw] lg:w-[45vw] snap-center cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative overflow-hidden rounded-2xl md:rounded-3xl aspect-[4/3]">
+      <div className="relative overflow-hidden rounded-3xl bg-foreground aspect-[4/3]">
         {/* Image */}
         <motion.img
           src={study.image}
@@ -84,17 +74,10 @@ function CaseCard({
           animate={{ scale: isHovered ? 1.05 : 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         />
-        
-        {/* Overlay */}
-        <motion.div 
-          className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent"
-          animate={{ opacity: isHovered ? 1 : 0.7 }}
-          transition={{ duration: 0.3 }}
-        />
 
         {/* Video play button */}
         {study.hasVideo && (
-          <motion.div 
+          <motion.div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-20 md:h-20 rounded-full bg-background/90 flex items-center justify-center"
             animate={{ scale: isHovered ? 1.1 : 1 }}
             transition={{ duration: 0.3 }}
@@ -103,37 +86,29 @@ function CaseCard({
           </motion.div>
         )}
 
-        {/* Content */}
+        {/* Caption overlay at bottom */}
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-          <motion.span 
-            className="inline-block text-xs font-medium uppercase tracking-widest text-primary-foreground/70 mb-2"
-            animate={{ y: isHovered ? 0 : 5, opacity: isHovered ? 1 : 0.8 }}
+          <motion.span
+            className="inline-block text-xs font-medium uppercase tracking-widest text-background/60 mb-2"
+            animate={{ y: isHovered ? 0 : 5, opacity: isHovered ? 1 : 0.7 }}
             transition={{ duration: 0.3 }}
           >
             {study.category}
           </motion.span>
-          <motion.h3 
-            className="text-xl md:text-2xl lg:text-3xl font-semibold text-primary-foreground mb-2"
+          <motion.p
+            className="text-xl md:text-2xl lg:text-3xl font-semibold text-background leading-tight"
             animate={{ y: isHovered ? 0 : 5 }}
             transition={{ duration: 0.3, delay: 0.05 }}
           >
             {t(study.titleKey)}
-          </motion.h3>
-          <motion.p 
-            className="text-sm md:text-base text-primary-foreground/80 mb-4"
+          </motion.p>
+          <motion.p
+            className="text-sm md:text-base text-background/70 mt-2 max-w-md"
             animate={{ y: isHovered ? 0 : 10, opacity: isHovered ? 1 : 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             {t(study.descKey)}
           </motion.p>
-          <motion.div
-            className="flex items-center gap-2 text-sm font-medium text-primary-foreground"
-            animate={{ y: isHovered ? 0 : 10, opacity: isHovered ? 1 : 0 }}
-            transition={{ duration: 0.3, delay: 0.15 }}
-          >
-            {t("cases.view")}
-            <ArrowUpRight className="w-4 h-4" />
-          </motion.div>
         </div>
       </div>
     </motion.div>
@@ -144,9 +119,10 @@ export function CasesSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { t } = useLanguage();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section id="cases" className="py-24 md:py-32 lg:py-40 bg-secondary/30">
+    <section id="cases" className="py-24 md:py-32 lg:py-40 bg-background">
       <div className="section-padding">
         <div className="container-wide">
           <motion.div
@@ -157,17 +133,20 @@ export function CasesSection() {
             className="text-center mb-16 md:mb-20"
           >
             <h2 className="heading-section mb-4">{t("cases.title")}</h2>
-            <p className="text-body max-w-xl mx-auto">
-              {t("cases.subtitle")}
-            </p>
+            <p className="text-body max-w-xl mx-auto">{t("cases.subtitle")}</p>
           </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {caseStudies.map((study, index) => (
-              <CaseCard key={study.id} study={study} index={index} />
-            ))}
-          </div>
         </div>
+      </div>
+
+      {/* Horizontal scroll gallery */}
+      <div
+        ref={scrollContainerRef}
+        className="flex gap-5 md:gap-8 overflow-x-auto snap-x snap-mandatory px-[7.5vw] pb-4 scrollbar-hide"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {caseStudies.map((study, index) => (
+          <CaseCard key={study.id} study={study} index={index} />
+        ))}
       </div>
     </section>
   );
