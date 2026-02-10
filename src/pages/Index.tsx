@@ -30,8 +30,8 @@ const Index = () => {
           <ApproachSection />
           <CasesSection />
           <ShowcaseSection />
-          <TeamSection />
           <DigitalSection />
+          <TeamSection />
           <CTASection />
         </main>
         <Footer />
