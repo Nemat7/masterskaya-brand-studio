@@ -19,6 +19,8 @@ export function Footer() {
     ],
     contact: [
       { label: "hello@masterskaya.com", href: "mailto:hello@masterskaya.com" },
+      { label: "Instagram", href: "https://instagram.com" },
+      { label: "Telegram", href: "https://t.me" },
     ],
   };
 
